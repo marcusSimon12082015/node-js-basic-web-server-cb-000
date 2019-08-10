@@ -125,7 +125,7 @@ describe('server', () => {
                response.should.eql(true);
                done();
              }
-           )          
+           )
         });
     });
 
