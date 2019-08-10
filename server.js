@@ -53,14 +53,14 @@ router.get('/message/:id',(request,response) => {
   const id = parseInt(request.params.id);
   const message = messages.find(message => message.id === id);
   if (typeof message === 'undefined') {
-    response.status = 404;  
+    response.status = 404;
     response.statusMessage = "No message found";
     response.end();
     return;
   }
     let hashedMessage = JSON.stringify(message);
 
-    if (request._parsedUrl.query && 
+    if (request._parsedUrl.query &&
       request._parsedUrl.query.includes('encrypt=true')) {
     response.setHeader('Content-Type', 'text/plain; charset=utf-8');
     return bcrypt.hash(hashedMessage,10,function(err,hash){
