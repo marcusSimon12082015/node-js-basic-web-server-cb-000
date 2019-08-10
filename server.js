@@ -37,7 +37,7 @@ router.get('/messages',(request,response) => {
   let hashedMessages = JSON.stringify(messages);
   response.setHeader('Content-Type', 'application/json; charset=utf-8');
 
-  if (request._parsedUrl.query && 
+  if (request._parsedUrl.query &&
     request._parsedUrl.query.includes('encrypt=true')) {
     response.setHeader('Content-Type', 'text/plain; charset=utf-8');
     return bcrypt.hash(hashedMessages,10,function(err,hash){
