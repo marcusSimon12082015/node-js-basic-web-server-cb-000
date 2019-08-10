@@ -34,24 +34,20 @@ router.post('/message',(request,response) =>{
 });
 
 router.get('/messages',(request,response) => {
+  let hashedMessages = JSON.stringify(messages);
   response.setHeader('Content-Type', 'application/json; charset=utf-8');
-  response.end(JSON.stringify(messages));
-});
 
-var handler = Router({ mergeParams: true });
-router.use('/message/:id', handler);
-
-handler.get('/',(request,response) => {
-  response.setHeader('Content-Type', 'application/json; charset=utf-8');
-  let message = messages.find(message => message.id === id);
-  if (message === 'undefined') {
-    response.status = 404;
-    response.statusMessage = "No message found";
-    response.end();
-    return;
+  if (request._parsedUrl.query && 
+    request._parsedUrl.query.includes('encrypt=true')) {
+    response.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    return bcrypt.hash(hashedMessages,10,function(err,hash){
+      response.end(hash);
+    })
   }
-  response.end(JSON.stringify(message));
+
+  response.end(hashedMessages);
 });
+
 
 const server = http.createServer((request, response) => {
   router(request, response, finalhandler(request, response));
